@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import render, redirect
-from regester.forms import LoginForm
+from regester.forms import LoginForm, RegisterForm
 from django.views.generic import TemplateView
 
 def login_user(request):
@@ -28,8 +28,23 @@ def login_user(request):
 
 
 class RegisterView(TemplateView):
-    template_name = 'regester/regester.html'
 
+    def get(self, request):
+        user_form = RegisterForm()
+        context = {'user_form': user_form}
+        return render(request, 'regester/regester.html', context)
+
+    def post(self, request):
+        user_form = RegisterForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            login(request, user)
+            return redirect('index')
+
+        context = {'user_form': user_form}
+        return render(request, 'regester/regester.html', context)
 
 def logout_user(request):
     logout(request)
