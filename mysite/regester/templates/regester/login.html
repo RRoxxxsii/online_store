@@ -15,20 +15,29 @@
     <div class="container">
       <div class="wrapper">
         <div class="title"><span>Login Form</span></div>
-        <form action="#">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          <div>
+            <i>{{ attention }}</i>
+          </div>
+          {% for error in login_form.non_field_errors %}
+          <div>
+            <i>{{ error }}</i>
+          </div>
+          {% endfor %}
           <div class="row">
             <i class="fas fa-user"></i>
-            <input type="text" placeholder="Email or Phone" required>
+            <input type="text" class="form-input" placeholder="Login" id="id_username" name="username" required>
           </div>
           <div class="row">
             <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Password" required>
+            <input type="password" class="form-input" placeholder="Password" id="id_password" name="password" required>
           </div>
           <div class="pass"><a href="#">Forgot password?</a></div>
           <div class="row button">
             <input type="submit" value="Login">
           </div>
-          <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
+          <div class="signup-link">Not a member? <a href="{% url 'regester' %}">Signup now</a></div>
         </form>
       </div>
     </div>
