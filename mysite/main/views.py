@@ -9,7 +9,9 @@ def store(request):
     return render(request, 'main/store.html')
 
 
-def checkout(requets):
-    return render(requets, 'main/checkout.html')
+def checkout(request):
+    return render(request, 'main/checkout.html')
 
 
+def product(request):
+    return render(request, 'main/product.html')
