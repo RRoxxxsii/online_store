@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 
+
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)

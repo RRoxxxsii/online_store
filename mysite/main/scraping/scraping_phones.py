@@ -12,7 +12,7 @@ from scraping_errors import *
 
 
 def scraping():
-    url_scraping = 'https://www.niceprice62.ru/noutbuki-i-kompjuternaja-tehnika/noutbuki/'
+    url_scraping = 'https://www.niceprice62.ru/telefony/mobilnye-telefony/'
     try:
         resp = requests.get(url_scraping, timeout=10.0)
     except requests.exceptions.Timeout:
@@ -38,15 +38,17 @@ def scraping():
 
         data['image_url'] = re.sub('jpe?g', 'webp', data['image_url'])
 
-        price_raw = block.select_one('.list-price').text
-        price_raw = Decimal(''.join(re.findall(r'\d+', price_raw)))
-        data['price'] = price_raw
+        if block.select_one('.new-price'):
+            price_raw = block.select_one('.new-price').text
+            price_raw = Decimal(''.join(re.findall(r'\d+', price_raw)))
+            data['price'] = price_raw
 
         data_list.append(data)
+
     for dictionary in data_list:
         # имя
         dict_name = dictionary['name']
-        name_laptop_full = re.match(r'Ноутбук.+', dict_name).group()
+        name_laptop_full = re.match(r'Смартфон.+', dict_name).group()
         l_name = re.search(r'([a-zA-Z0-9-_",()/]+\s){4}', name_laptop_full).group()
 
         # name
@@ -65,11 +67,8 @@ def scraping():
                 description=l_description,
                 price=dictionary['price'],
                 image_url=dictionary['image_url'],
-                category=ProductCategory(id=1),
+                category=ProductCategory(id=2),
             )
-
 
 if __name__ == '__main__':
     scraping()
-
-
