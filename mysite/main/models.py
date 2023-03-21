@@ -57,7 +57,7 @@ class Order(models.Model):
         if not cart:
             cart = Order.objects.create(user=user, status=Order.STATUS_CART, amount=0)
 
-         return cart
+        return cart
 
     def get_amount(self):
         amount = Decimal(0)
