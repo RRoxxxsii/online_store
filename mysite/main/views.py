@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
+from .models import *
 
 
 def index(request):
@@ -6,12 +8,19 @@ def index(request):
 
 
 def store(request):
-    return render(request, 'main/store.html')
+    data = Product.objects.raw('SELECT * FROM main_product')
+
+    return render(request, 'main/store.html', context={'data': data})
+
+
+def product_detail(request, pk):
+    prod = Product.objects.get(id=pk)
+    return render(request, 'main/product.html', context={'prod': prod})
 
 
 def checkout(request):
     return render(request, 'main/checkout.html')
 
 
-def product(request):
-    return render(request, 'main/product.html')
+
+
