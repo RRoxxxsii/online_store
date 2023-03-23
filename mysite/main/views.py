@@ -10,7 +10,7 @@ def index(request):
 def store(request):
     data = Product.objects.raw('SELECT * FROM main_product')
 
-    return render(request, 'main/store.html', context={'data': data})
+    return render(request, 'main/temp_shop_items.html', context={'data': data})
 
 
 def product_detail(request, pk):
