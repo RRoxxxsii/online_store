@@ -1,11 +1,10 @@
 {% extends 'main/store.html' %}
 {% block items %}
-<div class="products-container">
 
-						{% for i in data %}
-						<!-- store_app products -->
+						<div class="row">
+							{% for i in data %}
 							<!-- product -->
-							<div class="col-md-4 col-xs-5">
+							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
 										<img src="{{ i.image_url }}" alt="">
@@ -16,8 +15,12 @@
 									</div>
 									<div class="product-body">
 										<p class="product-category">{{ i.category }}</p>
-										<h3 class="product-name"><a href="{% url 'shop_detail' i.pk %}"> {{ i.name }} </a></h3>
-										<h4 class="product-price">{{ i.price }} <del class="product-old-price"></del></h4>
+										{% if i.pk %}
+        								<a href="{% url 'shop_detail' pk=i.pk %}">{{ i.name }}</a>
+										{% else %}
+											{{ i.name }}
+										{% endif %}
+										<h4 class="product-price">{{ i.price }} <del class="product-old-price">$990.00</del></h4>
 										<div class="product-rating">
 											<i class="fa fa-star"></i>
 											<i class="fa fa-star"></i>
@@ -37,6 +40,5 @@
 								</div>
 							</div>
 							{% endfor %}
-
-</div>
+						</div>
 {% endblock items %}

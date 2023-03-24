@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
 from .models import *
-
+import functools
+from django.core.paginator import Paginator
 
 def index(request):
     return render(request, 'main/index.html')
@@ -9,10 +9,18 @@ def index(request):
 
 def store(request):
     data = Product.objects.raw('SELECT * FROM main_product')
-    return render(request, 'main/temp_shop_items.html', context={'data': data})
+    smartphones_amount = Product.objects.filter(category_id=2).count()
+    headphones_amount = Product.objects.filter(category_id=3).count()
+    laptops_amount = Product.objects.filter(category_id=1).count()
+    context = {'data': data,
+               'phones': smartphones_amount,
+               'headphones': headphones_amount,
+               'laptops': laptops_amount}
+
+    return render(request, 'main/temp_shop_items.html', context=context)
 
 
-def product_detail(request, pk):
+def shop_detail(request, pk):
     prod = Product.objects.get(id=pk)
     return render(request, 'main/product.html', context={'prod': prod})
 
@@ -21,20 +29,31 @@ def checkout(request):
     return render(request, 'main/checkout.html')
 
 
-def store(request):
-    data = Product.objects.raw('SELECT * FROM main_product')
+
+
+
+# id=1- Ноутбуки id=2-Телефоны id=3-Наушники
+def store_category(cat_id):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(request):
+            data = Product.objects.filter(category__id=cat_id).values('id', 'image_url', 'name', 'price',
+                                                                      'category__name')
+            return func(request, data)
+        return wrapper
+    return decorator
+
+
+@store_category(cat_id=1)
+def laptop_store(request, data):
     return render(request, 'main/temp_shop_items.html', context={'data': data})
 
 
-def product_detail(request, pk):
-    prod = Product.objects.get(id=pk)
-    return render(request, 'main/product.html', context={'prod': prod})
-
-def laptop_store(request):
-    data = Product.objects.raw(
-        'SELECT main_product.id, main_product.image_url, main_product.name, main_product.price, main_productcategory.name '
-        'FROM main_product '
-        'INNER JOIN main_productcategory ON main_product.category_id = main_productcategory.id '
-        'WHERE main_productcategory.id=1')
+@store_category(cat_id=2)
+def mobile_store(request, data):
     return render(request, 'main/temp_shop_items.html', context={'data': data})
 
+
+@store_category(cat_id=3)
+def headphones_store(request, data):
+    return render(request, 'main/temp_shop_items.html', context={'data': data})
