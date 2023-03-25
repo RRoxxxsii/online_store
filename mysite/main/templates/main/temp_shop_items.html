@@ -15,11 +15,7 @@
 									</div>
 									<div class="product-body">
 										<p class="product-category">{{ i.category }}</p>
-										{% if i.pk %}
-        								<a href="{% url 'shop_detail' pk=i.pk %}">{{ i.name }}</a>
-										{% else %}
-											{{ i.name }}
-										{% endif %}
+        								<a href="{{ i.get_absolute_url }}">{{ i.name }}</a>
 										<h4 class="product-price">{{ i.price }} <del class="product-old-price">$990.00</del></h4>
 										<div class="product-rating">
 											<i class="fa fa-star"></i>

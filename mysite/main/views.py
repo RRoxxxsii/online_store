@@ -8,12 +8,12 @@ def index(request):
 
 
 def store(request):
-    data = Product.objects.raw('SELECT * FROM main_product')
+    data = Product.objects.all()
     return render(request, 'main/temp_shop_items.html', context={'data': data})
 
 
-def shop_detail(request, pk):
-    prod = Product.objects.get(id=pk)
+def shop_detail(request, product_id):
+    prod = Product.objects.get(id=product_id)
     return render(request, 'main/product.html', context={'prod': prod})
 
 
@@ -26,8 +26,7 @@ def store_category(cat_id):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(request):
-            data = Product.objects.filter(category__id=cat_id).values('id', 'image_url', 'name', 'price',
-                                                                      'category__name')
+            data = Product.objects.filter(category__id=cat_id)
             return func(request, data)
         return wrapper
     return decorator

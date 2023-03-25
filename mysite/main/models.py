@@ -5,6 +5,7 @@ from django.db.models import Sum
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils import timezone
+from django.urls import reverse
 
 
 
@@ -105,6 +106,9 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['pk']
+
+    def get_absolute_url(self):
+        return reverse('product', kwargs={'product_id': self.pk})
 
 
 class OrderItem(models.Model):
