@@ -145,7 +145,7 @@
 										</div>
 										<div class="cart-btns">
 											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="{% url 'checkout' %}">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -331,3 +331,10 @@
 			<!-- /bottom footer -->
 		</footer>
 		<!-- /FOOTER -->
+
+	<script src="{% static 'main/js/jquery.min.js' %}"></script>
+	<script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'main/js/slick.min.js' %}"></script>
+	<script src="{% static 'main/js/nouislider.min.js' %}"></script>
+	<script src="{% static 'main/js/jquery.zoom.min.js' %}"></script>
+	<script src="{% static 'main/js/main.js' %}"></script>
